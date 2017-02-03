@@ -25,13 +25,18 @@ public:
 
     void handle_read(const boost::system::error_code& error,
                      size_t bytes_transferred) {
-        boost::asio::mutable_buffer b =
-            boost::asio::buffer(data_, bytes_transferred);
-        std::size_t s = boost::asio::buffer_size(b);
-        std::string str(data_, s);
-        printf("receive data: %s\n", str.c_str());
+        if (!error) {
+            boost::asio::mutable_buffer b =
+                boost::asio::buffer(data_, bytes_transferred);
+            std::size_t s = boost::asio::buffer_size(b);
+            std::string str(data_, s);
+            printf("receive data: %s\n", str.c_str());
 
-        start();
+            start();
+        } else {
+            printf("delete this\n");
+            delete this;
+        }
     }
 
     void start() {
@@ -58,8 +63,8 @@ public:
     void start_accept() {
         session* sess = new session(io_service_);
         acceptor_.async_accept(sess->socket(),
-                              boost::bind(&server::handle_accept, this, sess,
-                                          boost::asio::placeholders::error));
+                               boost::bind(&server::handle_accept, this, sess,
+                                           boost::asio::placeholders::error));
     }
 
 private:
