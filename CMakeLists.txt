@@ -12,3 +12,5 @@ target_link_libraries(server ${WALTHAM_LIBRARIES} -lboost_system)
 
 add_executable(client client.cpp)
 target_link_libraries(client ${WALTHAM_LIBRARIES} -lboost_system)
+
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
