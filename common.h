@@ -1,3 +1,3 @@
 #pragma once
 
-enum { server_port = 61000};
+enum { server_port = 34400};
